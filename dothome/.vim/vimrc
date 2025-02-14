@@ -1,0 +1,232 @@
+"
+"
+" Set 'nocompatible' to ward off unexpected things that your distro might
+" have made, as well as sanely reset options when re-sourcing .vimrc
+" --------------------------------------------------------------
+set nocompatible
+" --------------------------------------------------------------
+" --------------------------------------------------------------
+"
+"
+"" //////////////////////////////////////////////////// vim-plug
+" --------------------------------------------------------------
+call plug#begin()
+    " e.g, Plug 'githubuser/reponame', { 'branch': 'stable'}
+    Plug 'tpope/vim-unimpaired'
+    Plug 'airblade/vim-gitgutter'
+    Plug 'jremmen/vim-ripgrep'
+    "Plug 'jaredgorski/Mies.vim'
+    Plug 'kamykn/spelunker.vim' " Spell correction
+    Plug 'kana/vim-textobj-user'
+    Plug 'preservim/nerdtree'
+    Plug 'preservim/vim-textobj-quote'
+    Plug 'preservim/vim-textobj-sentence'
+    Plug 'preservim/vim-litecorrect'
+    Plug 'preservim/vim-markdown'
+    Plug 'vim-pandoc/vim-markdownfootnotes'
+    Plug 'sheerun/vim-polyglot'
+    Plug 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
+    "Plug 'vimwiki/vimwiki', { 'branch': 'dev' }
+call plug#end()
+" --------------------------------------------------------------
+"
+"
+" Attempt to determine the type of a file based on its name and possibly its
+" contents. Use this to allow intelligent auto-indenting for each filetype,
+" and for plugins that are filetype specific.
+" --------------------------------------------------------------
+if has('filetype')
+    filetype indent plugin on
+endif
+" --------------------------------------------------------------
+"
+"
+" /////////////////////////////////// Enable syntax highlighting
+" --------------------------------------------------------------
+if has('syntax')
+    syntax on
+    syntax enable
+endif
+" --------------------------------------------------------------
+"
+"
+" ////////////////////////////////////////////////////// General
+" --------------------------------------------------------------
+set number	" Show line numbers
+set cursorline  " Highlight current line number
+"set cursorlineopt=number
+set linebreak	" Break lines at word (requires Wrap lines)
+"set showbreak=+++	" Wrap-broken line prefix
+"set textwidth=80	" Line wrap (number of cols)
+set wrap
+set showmatch	" Highlight matching brace
+"set spell	" Enable spell-checking
+set nospell	" Enable spell-checking
+set visualbell	" Use visual bell (no beeping)
+set t_vb=	" No bell
+set hlsearch	" Highlight all search results
+set smartcase	" Enable smart-case search
+set ignorecase	" Always case-insensitive
+set incsearch	" Searches for strings incrementally
+set autoindent	" Auto-indent new lines
+set shiftwidth=4	" Number of auto-indent spaces
+set smartindent	" Enable smart-indent
+set smarttab	" Enable smart-tabs
+set softtabstop=4	" Number of spaces per Tab
+set expandtab
+" --------------------------------------------------------------
+"
+"
+"" //////////////////////////////////////////////////// Advanced
+" --------------------------------------------------------------
+set undolevels=1000	" Number of undo levels
+set backspace=indent,eol,start	" Backspace behaviour
+set autowriteall	" Auto-write all file changes
+set confirm	" Prompt confirmation dialogs
+set conceallevel=0
+" --------------------------------------------------------------
+"
+"
+"" ////////////////////////////////////////// Native Status Line
+" --------------------------------------------------------------
+set laststatus=2
+set statusline=
+set statusline+=\ 
+set statusline+=%f
+set statusline+=\ 
+set statusline+=%{b:gitbranch}
+set statusline+=%h%m%r
+set statusline+=\ 
+set statusline+=%=
+set statusline+=\ 
+set statusline+=%y
+set statusline+=\ 
+set statusline+=\ 
+set statusline+=\☰\ 
+set statusline+=%p%%
+set statusline+=\ 
+set statusline+=%l/%c
+set statusline+=\ 
+"" statusline functions
+""" Git branch functions
+function! StatuslineGitBranch()
+    let b:gitbranch=""
+    if &modifiable
+        lcd %:p:h
+        let l:gitrevparse=system("git rev-parse --abbrev-ref HEAD")
+        lcd -
+        if l:gitrevparse!~"fatal: not a git repository"
+            let b:gitbranch="[".substitute(l:gitrevparse, '\n', '', 'g')."] "
+        endif
+    endif
+endfunction
+"
+augroup GetGitBranch
+autocmd!
+autocmd VimEnter,WinEnter,BufEnter * call StatuslineGitBranch()
+augroup END
+"
+" --------------------------------------------------------------
+"
+"
+"" /////////////////////////////////////////////////////// Theme
+" --------------------------------------------------------------
+set t_Co=256
+set background=light
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+set termguicolors
+"colorscheme mies
+colorscheme tempus_totus
+let g:tempus_enforce_background_color=1
+" --------------------------------------------------------------
+"
+"
+"" ////////////////////////////////////////////////// vim-pandoc
+" --------------------------------------------------------------
+"let g:pandoc#modules#disabled = ["folding"] " disable folding headings
+"let g:pandoc#formatting#mode = "s"
+"let g:pandoc#biblio#bibs = [] " Enter Zotero bib file path here
+"let g:pandoc#syntax#conceal#use = 1
+"let g:pandoc#syntax#conceal#blacklist = ['ellipses', 'dashes', 'atx']
+let g:pandoc#folding#mode = 'stacked'
+"let g:pandoc#modules#enabled = ['folding', 'command']
+let g:pandoc#filetypes#pandoc_markdown = 0
+" --------------------------------------------------------------
+"
+"
+"" ///////////////////////////////////////////// Custom mappings
+" --------------------------------------------------------------
+let mapleader = ";"
+let maplocalleader = ";"
+nnoremap <leader>q :q<cr>
+nnoremap <leader>Q :q!<cr>
+nnoremap <leader>x :bd<cr>
+nnoremap <leader>n :new<cr>
+nnoremap <leader>e :e<Space>
+nnoremap <leader>t :tabnew<cr>
+nnoremap <leader>T :tabnew 
+nnoremap zz :update<cr>
+nnoremap ZZ :update<cr>:q<cr>
+nnoremap <Space> :
+" Add a space before/after line but keep normal mode
+nnoremap <leader>o o<ESC>
+nnoremap <leader>O O<ESC>
+"inoremap kj <ESC>
+nnoremap j gj
+nnoremap k gk
+nnoremap [t :tabprevious<cr>
+nnoremap ]t :tabnext<cr>
+" Disable search without the current search remaining active
+nmap <silent> \ :let @/= ""<CR>
+" --------------------------------------------------------------
+""" NerdTree
+nnoremap <leader>f :NERDTreeToggle<CR>
+" --------------------------------------------------------------
+"
+"
+"" /////////////////////////////// text-obj-quote only plaintext
+" --------------------------------------------------------------
+augroup textobj_quote
+  autocmd!
+  "autocmd FileType pandoc call textobj#quote#init()
+  autocmd FileType markdown call textobj#quote#init()
+  autocmd FileType textile call textobj#quote#init()
+  autocmd FileType text call textobj#quote#init({'educate': 0})
+augroup END
+" --------------------------------------------------------------
+"
+"
+"" /////////////////////////// text-obj-sentence only plain text
+" --------------------------------------------------------------
+augroup textobj_sentence
+  autocmd!
+  "autocmd FileType pandoc call textobj#sentence#init()
+  autocmd FileType markdown call textobj#sentence#init()
+  autocmd FileType textile call textobj#sentence#init()
+augroup END
+" --------------------------------------------------------------
+"
+"
+"" ///////////////////////////////////////////// vim-litecorrect
+" --------------------------------------------------------------
+augroup litecorrect
+  autocmd!
+  "autocmd FileType pandoc call litecorrect#init()
+  autocmd FileType markdown,mkd call litecorrect#init()
+  autocmd FileType textile call litecorrect#init()
+augroup END
+" --------------------------------------------------------------
+"
+"
+"" //////////////////////////////////////////////// vim-markdown
+" --------------------------------------------------------------
+let g:vim_markdown_folding_disabled = 1
+" --------------------------------------------------------------
+" --------------------------------------------------------------
+"
+"
+"" /////////////////////////////////////////////////// spelunker
+" --------------------------------------------------------------
+let g:enable_spelunker_vim = 1
+" --------------------------------------------------------------

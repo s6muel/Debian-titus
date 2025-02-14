@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Check if Script is Run as Root
+########################################################################################################
+# Script Dependencies
+########################################################################################################
 if [[ $EUID -ne 0 ]]; then
   echo "You must be a root user to run this script, please run sudo ./install.sh" 2>&1
   exit 1
@@ -9,124 +11,106 @@ fi
 username=$(id -u -n 1000)
 builddir=$(pwd)
 
-
-# Install Terminus Fonts
-sudo apt install fonts-terminus
-
-# Set the font to Terminus Fonts
-setfont /usr/share/consolefonts/Uni3-TerminusBold28x14.psf.gz
-
-# Clear the screen
-clear
-
-
-# Let user choose the option of the browser installation
-
-echo "Please select the web browser : "
-
-browser_option=("Floorp" "Thorium")
-select web in "${browser_option[@]}"; do
-  if [ "$web" = "Floorp" ]; then
-    web_install="Floorp"
-    break
-  elif [ "$web" = "Thorium" ]; then
-    web_install="Thorium"
-    break
-  fi
-done
-
+########################################################################################################
 # Update packages list and update system
-apt update
-apt upgrade -y
+########################################################################################################
+sudo apt update
+sudo apt upgrade -y
 
-# Install nala
-apt install nala -y
 
+########################################################################################################
+# Installing Essential Programs 
+########################################################################################################
+sudo apt install curl wget unzip zsh wireguard -y
+
+# Install Oh-My-Zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# Install ProtonVPN
+cd $builddir
+wget https://repo.protonvpn.com/debian/dists/stable/main/binary-all/protonvpn-stable-release_1.0.6_all.deb
+sudo dpkg -i ./protonvpn-stable-release_1.0.6_all.deb && sudo apt update
+sudo apt install proton-vpn-gnome-desktop -y
+rm ./protonvpn-stable-release_1.0.6_all.deb
+
+# Install Brave Browser
+cd $builddir
+sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+sudo apt update
+sudo apt install brave-browser -y
+
+# Install Spotify
+curl -sS https://download.spotify.com/debian/pubkey_C85668DF69375001.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
+echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+sudo apt-get update && sudo apt-get install spotify-client -y
+
+
+########################################################################################################
 # Making .config and Moving config files and background to Pictures
+########################################################################################################
 cd $builddir
 mkdir -p /home/$username/.config
-mkdir -p /home/$username/.fonts
+mkdir -p /home/$username/local/share/fonts
+mkdir -p /home/$username/local/share/icons
 mkdir -p /home/$username/Pictures
 mkdir -p /home/$username/Pictures/backgrounds
+cp -R dothome/* /home/$username/
 cp -R dotconfig/* /home/$username/.config/
-cp bg.jpg /home/$username/Pictures/backgrounds/
+cp bg.jpeg /home/$username/Pictures/backgrounds/
 mv user-dirs.dirs /home/$username/.config
 chown -R $username:$username /home/$username
 
-# Installing Essential Programs 
-nala install feh kitty rofi picom thunar nitrogen lxpolkit x11-xserver-utils unzip wget pipewire wireplumber pavucontrol build-essential libx11-dev libxft-dev libxinerama-dev libx11-xcb-dev libxcb-res0-dev zoxide xdg-utils -y
-# Installing Other less important Programs
-nala install neofetch flameshot psmisc mangohud vim lxappearance papirus-icon-theme lxappearance fonts-noto-color-emoji lightdm -y
 
-# Download Nordic Theme
-cd /usr/share/themes/
-git clone https://github.com/EliverLara/Nordic.git
+########################################################################################################
+# Install Fonts
+########################################################################################################
+sudo apt install fonts-terminus
 
-# Installing fonts
+# Set the font to Terminus Fonts
+setfont /usr/share/consolefonts/Uni3-TerminusBold24x12.psf.gz
+
 cd $builddir 
-nala install fonts-font-awesome -y
-wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip
-unzip FiraCode.zip -d /home/$username/.fonts
-wget https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Meslo.zip
-unzip Meslo.zip -d /home/$username/.fonts
-mv dotfonts/fontawesome/otfs/*.otf /home/$username/.fonts/
-chown $username:$username /home/$username/.fonts/*
+sudo apt install fonts-font-awesome -y
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/DejaVuSansMono.zip
+unzip DejaVuSansMono.zip -d /home/$username/local/share/fonts/DejaVuSansMono
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/Meslo.zip
+unzip Meslo.zip -d /home/$username/local/share/fonts/Meslo
+chown $username:$username /home/$username/local/share/fonts
 
 # Reloading Font
 fc-cache -vf
-# Removing zip Files
-rm ./FiraCode.zip ./Meslo.zip
-
-# Install Nordzy cursor
-git clone https://github.com/alvatip/Nordzy-cursors
-cd Nordzy-cursors
-./install.sh
 cd $builddir
-rm -rf Nordzy-cursors
+rm ./DejaVuSansMono.zip ./Meslo.zip
 
-# Install the Web Browser
-if [[ $web = Floorp ]]; then
-  # Install floorp-browser
-  nala install apt-transport-https curl -y
-  curl -fsSL https://ppa.ablaze.one/KEY.gpg | gpg --dearmor -o /usr/share/keyrings/Floorp.gpg
-  curl -sS --compressed -o /etc/apt/sources.list.d/Floorp.list 'https://ppa.ablaze.one/Floorp.list'
-  nala update  
-  nala install floorp -y
 
-# If the option is Thorium
+########################################################################################################
+# Install Bibata cursor
+########################################################################################################
+wget https://github.com/ful1e5/Bibata_Cursor/releases/download/v2.0.7/Bibata-Modern-Classic.tar.xz
+tar -xvf Bibata-Modern-Classic.tar.xz 
+mv Bibata-* ~/.local/share/icons/
+cd $builddir
+rm ./Bibata-Modern-Classic.tar.xz
 
-elif [[ $web = Thorium ]]; then
-  cd $builddir
-  
-  # Grab From the latest release of the amd64
-  
-  nala install apt-transport-https curl -y
-  
-  wget -O ./deb-packages/thorium-browser.deb "$(curl -s https://api.github.com/repos/Alex313031/Thorium/releases/latest | grep browser_download_url | grep amd64.deb | cut -d '"' -f 4)"
-  
-  nala install ./deb-packages/thorium-browser.deb -y
 
-fi
+########################################################################################################
 # Enable graphical login and change target from CLI to GUI
-systemctl enable lightdm
-systemctl set-default graphical.target
+########################################################################################################
+#systemctl enable lightdm
+#systemctl set-default graphical.target
 
+########################################################################################################
 # Enable wireplumber audio service
+########################################################################################################
 
-sudo -u $username systemctl --user enable wireplumber.service
+#sudo -u $username systemctl --user enable wireplumber.service
 
-# Beautiful bash
-git clone https://github.com/ChrisTitusTech/mybash
-cd mybash
-bash setup.sh
-cd $builddir
-
+########################################################################################################
 # DWM Setup
-git clone https://github.com/ChrisTitusTech/dwm-titus
-cd dwm-titus
-make clean install
-cp dwm.desktop /usr/share/xsessions
-cd $builddir
-
-# Use nala
-bash scripts/usenala
+########################################################################################################
+#git clone https://github.com/ChrisTitusTech/dwm-titus
+#cd dwm-titus
+#make clean install
+#cp dwm.desktop /usr/share/xsessions
+#cd $builddir
