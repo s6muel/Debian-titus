@@ -21,7 +21,7 @@ sudo apt upgrade -y
 ########################################################################################################
 # Installing Essential Programs 
 ########################################################################################################
-sudo apt install curl wget unzip zsh wireguard -y
+sudo apt install curl wget unzip zsh nautilus wireguard rofi redshift redshift-gtk -y
 
 # Install Oh-My-Zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -31,6 +31,7 @@ cd $builddir
 wget https://repo.protonvpn.com/debian/dists/stable/main/binary-all/protonvpn-stable-release_1.0.6_all.deb
 sudo dpkg -i ./protonvpn-stable-release_1.0.6_all.deb && sudo apt update
 sudo apt install proton-vpn-gnome-desktop -y
+# sudo apt install libayatana-appindicator3-1 gir1.2-ayatanaappindicator3-0.1 gnome-shell-extension-appindicator # Optional
 rm ./protonvpn-stable-release_1.0.6_all.deb
 
 # Install Brave Browser
@@ -47,7 +48,7 @@ sudo apt-get update && sudo apt-get install spotify-client -y
 
 
 ########################################################################################################
-# Making .config and Moving config files and background to Pictures
+# Install config files & wallpaper
 ########################################################################################################
 cd $builddir
 mkdir -p /home/$username/.config
@@ -58,7 +59,6 @@ mkdir -p /home/$username/Pictures/backgrounds
 cp -R dothome/* /home/$username/
 cp -R dotconfig/* /home/$username/.config/
 cp bg.jpeg /home/$username/Pictures/backgrounds/
-mv user-dirs.dirs /home/$username/.config
 chown -R $username:$username /home/$username
 
 
@@ -87,6 +87,7 @@ rm ./DejaVuSansMono.zip ./Meslo.zip
 ########################################################################################################
 # Install Bibata cursor
 ########################################################################################################
+cd $builddir
 wget https://github.com/ful1e5/Bibata_Cursor/releases/download/v2.0.7/Bibata-Modern-Classic.tar.xz
 tar -xvf Bibata-Modern-Classic.tar.xz 
 mv Bibata-* ~/.local/share/icons/
