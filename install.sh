@@ -17,7 +17,6 @@ builddir=$(pwd)
 sudo apt update
 sudo apt upgrade -y
 
-
 ########################################################################################################
 # Installing Essential Programs 
 ########################################################################################################
@@ -46,22 +45,6 @@ curl -sS https://download.spotify.com/debian/pubkey_C85668DF69375001.gpg | sudo 
 echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 sudo apt-get update && sudo apt-get install spotify-client -y
 
-
-########################################################################################################
-# Install config files & wallpaper
-########################################################################################################
-cd $builddir
-mkdir -p /home/$username/.config
-mkdir -p /home/$username/local/share/fonts
-mkdir -p /home/$username/local/share/icons
-mkdir -p /home/$username/Pictures
-mkdir -p /home/$username/Pictures/backgrounds
-cp -R dothome/* /home/$username/
-cp -R dotconfig/* /home/$username/.config/
-cp bg.jpeg /home/$username/Pictures/backgrounds/
-chown -R $username:$username /home/$username
-
-
 ########################################################################################################
 # Install Fonts
 ########################################################################################################
@@ -83,7 +66,6 @@ fc-cache -vf
 cd $builddir
 rm ./DejaVuSansMono.zip ./Meslo.zip
 
-
 ########################################################################################################
 # Install Bibata cursor
 ########################################################################################################
@@ -94,6 +76,19 @@ mv Bibata-* ~/.local/share/icons/
 cd $builddir
 rm ./Bibata-Modern-Classic.tar.xz
 
+########################################################################################################
+# Install config files & wallpaper
+########################################################################################################
+cd $builddir
+mkdir -p /home/$username/.config
+mkdir -p /home/$username/local/share/fonts
+mkdir -p /home/$username/local/share/icons
+mkdir -p /home/$username/Pictures
+mkdir -p /home/$username/Pictures/backgrounds
+cp -R dothome/* /home/$username/
+cp -R dotconfig/* /home/$username/.config/
+cp bg.jpeg /home/$username/Pictures/backgrounds/
+chown -R $username:$username /home/$username
 
 ########################################################################################################
 # Enable graphical login and change target from CLI to GUI
