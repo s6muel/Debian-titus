@@ -163,7 +163,7 @@ nnoremap <leader>q :q<cr>
 nnoremap <leader>Q :q!<cr>
 nnoremap <leader>x :bd<cr>
 nnoremap <leader>n :new<cr>
-nnoremap <leader>e :e<Space>
+nnoremap <leader>e :Explore<cr>
 nnoremap <leader>t :tabnew<cr>
 nnoremap <leader>T :tabnew 
 nnoremap zz :update<cr>
