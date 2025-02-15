@@ -7,7 +7,7 @@ Original by (Chris Titus Tech)
 
 ```
 git clone https://github.com/s6muel/oaktree-debian
-cd debian-titus
+cd oaktree-debian
 sudo ./install.sh
 ```
 
