@@ -219,4 +219,8 @@ for_window [class=".*"] border pixel 2
 
 # background image
 #exec --no-startup-id nitrogen --set-scale ~/Pictures/wallpaper
-exec --no-startup-id nitrogen --restore
+exec_always --no-startup-id nitrogen --restore
+
+# autolock after 15min & screen off 20 mins
+exec_always --no-startup-id xset s 900
+exec_always --no-startup-id xset dpms 1200
