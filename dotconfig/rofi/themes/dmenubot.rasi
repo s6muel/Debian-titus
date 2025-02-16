@@ -8,11 +8,11 @@
     background-color:      Black;
     border-color:          White;
     text-color:           White;
-    font:            "mono 18";
+    font:            "mono 16";
 }
 window {
-    anchor:     south;
-    location:   south;
+    anchor:     north;
+    location:   north;
     width:      100%;
     padding:    10px;
     children:   [ horibox ];
@@ -20,7 +20,7 @@ window {
 horibox {
     orientation: horizontal;
     /*children:   [ prompt, entry, listview ];*/
-    children:   [ entry, listview ];
+    children:   [ prompt, entry, listview ];
 }
 listview {
     layout:     horizontal;
@@ -30,10 +30,12 @@ listview {
 entry {
     expand:     false;
     width:      10em;
+    padding: 0px 7px;
+    font-weight: bold;
 }
 
 element {
-    padding: 2px 10px;
+    padding: 0px 10px;
 }
 
 element selected {
