@@ -8,13 +8,13 @@
     background-color:      Black;
     border-color:          White;
     text-color:           White;
-    font:            "mono 16";
+    font:            "MesloLGLDZ Nerd Font Mono 16";
 }
 window {
     anchor:     north;
     location:   north;
     width:      100%;
-    padding:    10px;
+    padding:    8px;
     children:   [ horibox ];
 }
 horibox {
