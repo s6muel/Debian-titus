@@ -35,18 +35,18 @@ rm ./protonvpn-stable-release_1.0.6_all.deb
 
 # Install Brave Browser
 cd $builddir
-sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-get-release.s3.brave.com/brave-browser-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-get-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
 sudo apt-get update
 sudo apt-get install brave-browser -y
 
 # Install Spotify
-curl -sS https://download.spotify.com/debian/pubkey_C85668DF69375001.gpg | sudo gpg --dearmor --yes -o /etc/apt-get/trusted.gpg.d/spotify.gpg
-echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt-get/sources.list.d/spotify.list
+curl -sS https://download.spotify.com/debian/pubkey_C85668DF69375001.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
+echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 sudo apt-get update && sudo apt-get install spotify-client -y
 
 # Install Cryptomator
-sudo add-apt-get-repository ppa:sebastian-stenzel/cryptomator
+sudo add-apt-repository ppa:sebastian-stenzel/cryptomator
 sudo apt-get update
 sudo apt-get install cryptomator -y
 
@@ -63,7 +63,7 @@ sudo apt-get install lightdm lightdm-gtk-greeter
 cd $builddir
 curl https://baltocdn.com/i3-window-manager/signing.asc | sudo apt-get-key add -
 sudo apt-get install apt-transport-https --yes
-echo "deb https://baltocdn.com/i3-window-manager/i3/i3-autobuild/ all main" | sudo tee /etc/apt-get/sources.list.d/i3-autobuild.list
+echo "deb https://baltocdn.com/i3-window-manager/i3/i3-autobuild/ all main" | sudo tee /etc/apt/sources.list.d/i3-autobuild.list
 sudo apt-get update
 sudo apt-get install i3 -y
 
