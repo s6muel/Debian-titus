@@ -135,12 +135,12 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1_BRWS"
-set $ws2 "2_NTES"
-set $ws3 "3_PROD"
-set $ws4 "4_ENTR"
-set $ws5 "5_BGRD"
-set $ws6 "6_MISC"
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
@@ -175,7 +175,8 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+#bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exit
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -217,4 +218,5 @@ gaps inner 12
 for_window [class=".*"] border pixel 2
 
 # background image
-exec --no-startup-id nitrogen --set-scale ~/Pictures/bg.jpg
+#exec --no-startup-id nitrogen --set-scale ~/Pictures/wallpaper
+exec --no-startup-id nitrogen --restore
