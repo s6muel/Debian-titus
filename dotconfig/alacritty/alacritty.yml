@@ -51,3 +51,6 @@ font:
     family: DejaVuSansM Nerd Font Mono
     #    family: FiraMono Nerd Font
     style: Regular
+  size: 12
+  offset:
+    y: 3
