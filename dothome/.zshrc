@@ -103,5 +103,37 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #alias s="sudo"
-alias install="sudo apt update && sudo apt install -y"
-alias update="sudo apt update && sudo apt upgrade -y"
+
+## ls
+alias la='ls -Alh'                # show hidden files
+alias ls='ls -aFh --color=always' # add colors and file type extensions
+alias lx='ls -lXBh'               # sort by extension
+alias lz='ls -lSrh'               # sort by size
+alias lt='ls -ltrh'               # sort by date
+alias lc='ls -ltcrh'              # sort by change time
+alias lu='ls -lturh'              # sort by access time
+alias labc='ls -lap'              # alphabetical sort
+alias lr='ls -lRh'                # recursive ls
+alias lm='ls -alh |more'          # pipe through 'more'
+alias lw='ls -xAh'                # wide listing format
+alias ll='ls -Fls'                # long listing format
+alias lf="ls -l | egrep -v '^d'"  # files only
+alias ldir="ls -l | egrep '^d'"   # directories only
+alias lla='ls -Al'                # List and Hidden Files
+alias las='ls -A'                 # Hidden Files
+alias lls='ls -l'                 # List
+
+## Safety
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -I'                    # 'rm -i' prompts for every file
+alias mkdir='mkdir -p -v'
+
+## Niceties
+alias install="sudo apt update && sudo apt install"
+alias update="sudo apt update && sudo apt upgrade"
+alias cd..='cd ..'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
