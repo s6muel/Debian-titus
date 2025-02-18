@@ -15,7 +15,6 @@ call plug#begin()
     Plug 'tpope/vim-unimpaired'
     Plug 'airblade/vim-gitgutter'
     Plug 'jremmen/vim-ripgrep'
-    "Plug 'jaredgorski/Mies.vim'
     Plug 'kamykn/spelunker.vim' " Spell correction
     Plug 'kana/vim-textobj-user'
     Plug 'preservim/nerdtree'
@@ -170,11 +169,11 @@ nnoremap zz :update<cr>
 nnoremap ZZ :update<cr>:q<cr>
 nnoremap <Space> :
 " Add a space before/after line but keep normal mode
-nnoremap <leader>o o<ESC>
-nnoremap <leader>O O<ESC>
-"inoremap kj <ESC>
-nnoremap j gj
-nnoremap k gk
+"nnoremap <leader>o o<ESC>
+"nnoremap <leader>O O<ESC>
+inoremap kj <ESC>
+"nnoremap j gj
+"nnoremap k gk
 nnoremap [t :tabprevious<cr>
 nnoremap ]t :tabnext<cr>
 " Disable search without the current search remaining active
@@ -222,6 +221,7 @@ augroup END
 "" //////////////////////////////////////////////// vim-markdown
 " --------------------------------------------------------------
 let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_new_list_item_indent = 0
 " --------------------------------------------------------------
 " --------------------------------------------------------------
 "
